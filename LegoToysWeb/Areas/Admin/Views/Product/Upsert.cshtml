@@ -1,0 +1,118 @@
+﻿@model ProductVM
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input asp-for="Product.Id" hidden />
+    <input asp-for="Product.ImageUrl" hidden />
+    <div class="row">
+        <div class="col-10">
+            <div class="border p-3 mt-4 row">
+                <div class="row pb-2">
+                    <h2 class="text-primary">@(Model.Product.Id == 0 ? "新增" : "修改") 產品</h2>
+                    <hr />
+                </div>
+                <div asp-validation-summary="All"></div>
+                <div class="mb-3">
+                    <label asp-for="Product.Title">商品名稱</label>
+                    <input class="form-control" asp-for="Product.Title" />
+                    <span class="text-danger" asp-validation-for="Product.Title"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Product.Description">商品描述</label>
+                    <textarea class="form-control" rows="3" asp-for="Product.Description"></textarea>
+                    <span class="text-danger" asp-validation-for="Product.Description"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.ISBN">商品編號</label>
+                    <input class="form-control" asp-for="Product.ISBN" />
+                    <span class="text-danger" asp-validation-for="Product.ISBN"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Manufacturer">製造商</label>
+                    <input class="form-control" asp-for="Product.Manufacturer" />
+                    <span class="text-danger" asp-validation-for="Product.Manufacturer"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.ListPrice">價格</label>
+                    <input class="form-control" asp-for="Product.ListPrice" />
+                    <span class="text-danger" asp-validation-for="Product.ListPrice"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Price">優惠價(1-50)</label>
+                    <input class="form-control" asp-for="Product.Price" />
+                    <span class="text-danger" asp-validation-for="Product.Price"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Price50">優惠價(50-100)</label>
+                    <input class="form-control" asp-for="Product.Price50" />
+                    <span class="text-danger" asp-validation-for="Product.Price50"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Price100">優惠價(100+)</label>
+                    <input class="form-control" asp-for="Product.Price100" />
+                    <span class="text-danger" asp-validation-for="Product.Price100"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Product.ImageUrl"></label>
+                    <input type="file" class="form-control" id="uploadBox" name="file" />
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.CategoryId">玩具分類</label>
+                    <select class="form-select" asp-for="Product.CategoryId" asp-items="@Model.CategoryList">
+                        <option disabled selected>--Select Category--</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="Product.CategoryId"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.CoverTypeId">玩具型態</label>
+                    <select class="form-select" asp-for="Product.CoverTypeId" asp-items="@Model.CoverTypeList">
+                        <option disabled selected>--Select CoverType--</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="Product.CoverTypeId"></span>
+                </div>
+                <div class="col-6">
+                    @if (Model.Product.Id == 0)
+                    {
+                        <button class="btn btn-primary" type="submit" onclick="return ValidateInput();" style="width: 150px">新增</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" type="submit" style="width: 150px">修改</button>
+                    }
+                    <a class="btn btn-secondary" asp-controller="Product" asp-action="Index" style="width: 150px">
+                        回上一頁
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 pt-4">
+            <img src="@Model.Product.ImageUrl" style="width: 100%; border-radius: 5px; border: 1px solid #bbb9b9;" />
+        </div>
+    </div>
+
+
+</form>
+
+@section Scripts {
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+<script>
+    function ValidateInput() {
+        if(document.getElementById('uploadBox').value == '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please upload an Image!',
+            })
+            return false;
+        }
+        return true;
+    }
+
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+</script>
+}

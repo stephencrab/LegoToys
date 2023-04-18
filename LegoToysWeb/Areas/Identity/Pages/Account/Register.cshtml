@@ -1,0 +1,139 @@
+﻿@page
+@using LegoToys.Utility
+@model RegisterModel
+@{
+    ViewData["Title"] = "註冊";
+}
+@if (User.IsInRole(SD.Role_User_Admin))
+{
+    <h1 class="pt-4">註冊 - Admin Portal</h1>
+}
+else
+{
+    <h1 class="pt-4">@ViewData["Title"]</h1>
+}
+
+
+<div class="row">
+    <div class="col-md-7">
+        <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>註冊新帳號</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.Email"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+                <label asp-for="Input.Name"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" />
+                <label asp-for="Input.PhoneNumber"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.PostalCode" class="form-control" aria-required="true" />
+                <label asp-for="Input.PostalCode"></label>
+                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.City" class="form-control" aria-required="true" />
+                <label asp-for="Input.City"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.District" class="form-control" aria-required="true" />
+                <label asp-for="Input.District"></label>
+                <span asp-validation-for="Input.District" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2">
+                <input asp-for="Input.Address" class="form-control" aria-required="true" />
+                <label asp-for="Input.Address"></label>
+                <span asp-validation-for="Input.Address" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                <label asp-for="Input.Password"></label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-6">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                <label asp-for="Input.ConfirmPassword"></label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole(SD.Role_User_Admin))
+            {
+                <div class="form-floating py-2 col-6">
+                    <select class="form-select" asp-for="Input.Role" asp-items="@Model.Input.RoleList">
+                        <option disabled selected>--Select Role--</option>
+                    </select>
+                    <label asp-for="Input.Role"></label>
+                </div>
+                <div class="form-floating py-2 col-6">
+                    <select class="form-select" asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" style="display: none;">
+                        <option disabled selected>--Select Company--</option>
+                    </select>
+                    <label id="Input_CompanyId_Label" asp-for="Input.CompanyId" style="display: none;"></label>
+                </div>
+            }
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-primary">確認註冊</button>
+        </form>
+    </div>
+    @if (!User.IsInRole(SD.Role_User_Admin))
+    {
+        <div class="col-md-5">
+            <section>
+                <h3>使用第三方登入: </h3>
+                <hr />
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <div>
+                            <p>
+                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                    article
+                                    about setting up this ASP.NET application to support logging in via external services
+                                </a>.
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
+                }
+            </section>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#Input_Role').change(function () {
+                var selection = $('#Input_Role option:selected').text();
+                if (selection !== 'Company') {
+                    $('#Input_CompanyId').hide();
+                    $('#Input_CompanyId_Label').hide();
+                } else {
+                    $('#Input_CompanyId').show();
+                    $('#Input_CompanyId_Label').show();
+                }
+            });
+        });
+    </script>
+}

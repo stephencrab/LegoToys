@@ -1,0 +1,287 @@
+﻿@model OrderVM
+@using LegoToys.Utility
+
+<form method="post">
+    <input asp-for="OrderHeader.Id" hidden />
+    <br />
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-dark text-light ml-0">
+                <div class="container row">
+                    <div class="col-12 d-none d-md-block col-md-6 pb-1">
+                        <i class="fas fa-shopping-cart"></i> &nbsp; 訂單詳情
+                    </div>
+                    <div class="col-12 col-md-4 offset-md-2 text-right">
+                        <a class="btn btn-outline-info form-control btn-sm" asp-action="Index">回到訂單</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 pb-4">
+                            <div class="row">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-primary">出貨明細:</span>
+                                </h4>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">姓名</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.Name" />
+                                        <span class="text-danger" asp-validation-for="OrderHeader.Name"></span>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.Name" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">聯絡電話</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.PhoneNumber" />
+                                        <span class="text-danger" asp-validation-for="OrderHeader.PhoneNumber"></span>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.PhoneNumber" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">郵遞區號</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.PostalCode" />
+                                        <span class="text-danger" asp-validation-for="OrderHeader.PostalCode"></span>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.PostalCode" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">縣市</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.City" />
+                                        <span class="text-danger" asp-validation-for="OrderHeader.City"></span>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.City" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">鄉鎮區</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.District" />
+                                        <span class="text-danger" asp-validation-for="OrderHeader.District"></span>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.District" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">地址</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.Address" />
+                                        <span class="text-danger" asp-validation-for="OrderHeader.Address"></span>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.Address" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">信箱</div>
+                                <div class="col-9">
+                                    <input class="form-control" asp-for="OrderHeader.ApplicationUser.Email" readonly />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">下訂日期</div>
+                                <div class="col-9">
+                                    <input class="form-control" value="@Model.OrderHeader.OrderDate.ToShortDateString()" readonly />
+                                    @*<input class="form-control" asp-for="OrderHeader.OrderDate" readonly />*@
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">貨運公司</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" id="carrier" asp-for="OrderHeader.Carrier" />
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.Carrier" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">寄貨單號</div>
+                                <div class="col-9">
+                                    @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                                    {
+                                        <input class="form-control" id="trackingNumber" asp-for="OrderHeader.TrackingNumber" />
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" asp-for="OrderHeader.TrackingNumber" readonly />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">出貨日期</div>
+                                <div class="col-9">
+                                    <input class="form-control" value="@Model.OrderHeader.ShippingDate.ToShortDateString()" readonly />
+                                </div>
+                            </div>
+                            @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                            {
+                                <div class="row my-1">
+                                    <div class="col-3">Session ID</div>
+                                    <div class="col-9">
+                                        <input class="form-control" asp-for="OrderHeader.SessionId" readonly />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Payment Intent ID</div>
+                                    <div class="col-9">
+                                        <input class="form-control" asp-for="OrderHeader.PaymentIntentId" readonly />
+                                    </div>
+                                </div>
+                            }
+                            <div class="row my-1">
+                                @if (Model.OrderHeader.SessionId == null)
+                                {
+                                    <div class="col-3">Payment Due Date</div>
+                                    <div class="col-9">
+                                        <input class="form-control" value="@Model.OrderHeader.PaymentDueDate.ToShortDateString()" readonly />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-3">Payment Date</div>
+                                    <div class="col-9">
+                                        <input class="form-control" value="@Model.OrderHeader.PaymentDate.ToShortDateString()" readonly />
+                                    </div>
+                                }
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">付款狀態</div>
+                                <div class="col-9">
+                                    <input class="form-control" asp-for="OrderHeader.PaymentStatus" readonly />
+                                </div>
+                            </div>
+                            <input asp-action="UpdateOrderDetail" type="submit" class="btn btn-warning form-control my-1" value="Update Order Details" />
+
+
+                        </div>
+                        <div class="col-12 col-lg-5 offset-lg-1">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-primary">Order Summary</span>
+                            </h4>
+                            <label class="btn btn-outline-primary form-control my-2">Order Status - @Model.OrderHeader.OrderStatus</label>
+
+                            <ul class="list-group mb-3">
+                                @foreach (var detail in Model.OrderDetails)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between p-2">
+                                        <div class="row container">
+                                            <div class="col-8">
+
+                                                <h6 class="my-0 text-primary">@detail.Product.Title</h6>
+                                                <small class="text-muted">Price : @detail.Price.ToString("0.##")</small><br />
+                                                <small class="text-muted">Quantity : @detail.Count</small>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <p class="text-success">$@((detail.Count * detail.Price).ToString("0.##"))</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                <li class="list-group-item bg-info">
+                                    <div class="row container">
+                                        <div class="col-6">
+                                            <h5 class="text-white">TOTAL </h5>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <h5 class="text-white">$@Model.OrderHeader.OrderTotal.ToString("0.##")</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            @if (Model.OrderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment &&
+                                Model.OrderHeader.OrderStatus == SD.StatusShipped)
+                            {
+                                <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
+                            }
+
+                            @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_Emp))
+                            {
+                                if (Model.OrderHeader.OrderStatus == SD.StatusApproved)
+                                {
+                                    <input type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1" value="Start Processing" />
+                                }
+                                if (Model.OrderHeader.OrderStatus == SD.StatusInProcess)
+                                {
+                                    <input type="submit" asp-action="ShipOrder" onclick="return ValidateInput();" class="btn btn-primary form-control my-1" value="Ship Order" />
+                                }
+                                
+                                if (Model.OrderHeader.OrderStatus != SD.StatusRefunded &&
+                                    Model.OrderHeader.OrderStatus != SD.StatusCancelled &&
+                                    Model.OrderHeader.OrderStatus != SD.StatusShipped)
+                                {
+                                    <input type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1" value="Cancel Order" />
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function ValidateInput() {
+            if (document.getElementById('trackingNumber').value == '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter tracking number!',
+                })
+                return false;
+            }
+            if (document.getElementById('carrier').value == '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter carrier!',
+                })
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

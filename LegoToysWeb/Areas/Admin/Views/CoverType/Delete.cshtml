@@ -1,0 +1,24 @@
+﻿@model CoverType
+
+<form method="post" asp-action="Delete">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">刪除</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="Name">名稱</label>
+            <input class="form-control" disabled asp-for="Name" />
+        </div>
+        @*<div class="mb-3">
+            <label asp-for="DisplayOrder"></label>
+            <input class="form-control" disabled asp-for="DisplayOrder" />
+        </div>*@
+        <button class="btn btn-danger" type="submit" style="width: 150px">刪除</button>
+        <a class="btn btn-secondary" asp-controller="Category" asp-action="Index" style="width: 150px"> 
+            回上一頁
+        </a>
+    </div>
+</form>

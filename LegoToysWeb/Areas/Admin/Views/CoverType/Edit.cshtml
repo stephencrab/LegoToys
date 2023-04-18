@@ -1,0 +1,31 @@
+﻿@model CoverType
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">修改</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="Name">名稱</label>
+            <input class="form-control" asp-for="Name" />
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+        @*<div class="mb-3">
+            <label asp-for="DisplayOrder"></label>
+            <input class="form-control" asp-for="DisplayOrder" />
+            <span class="text-danger" asp-validation-for="DisplayOrder"></span>
+        </div>*@
+        <button class="btn btn-primary" type="submit" style="width: 150px">修改</button>
+        <a class="btn btn-secondary" asp-controller="CoverType" asp-action="Index" style="width: 150px"> 
+            回上一頁
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }  
+}
